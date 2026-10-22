@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">InkFlow</string>
+    <string name="title_activity_main">InkFlow</string>
+    <string name="package_name">com.inkflow.app</string>
+    <string name="custom_url_scheme">com.inkflow.app</string>
+</resources>

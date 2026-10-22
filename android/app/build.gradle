@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+// 可独立安装的两个版本：
+//   默认（apk-full.bat 完整版）：com.inkflow.app / InkFlow
+//   干净版（apk.bat 公开分发）：com.inkflow.app.public / InkFlow
+// 包名不同 => 可同时安装在手机上互不覆盖
+def buildAppId = project.hasProperty('buildAppId') ? project.getProperty('buildAppId') : 'com.inkflow.app'
+def buildAppName = project.hasProperty('buildAppName') ? project.getProperty('buildAppName') : 'InkFlow'
+
+android {
+    namespace "com.inkflow.app"
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId buildAppId
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // 覆盖 strings.xml，保证桌面显示名、深链 scheme 与包名一致
+        resValue "string", "app_name", buildAppName
+        resValue "string", "title_activity_main", buildAppName
+        resValue "string", "package_name", buildAppId
+        resValue "string", "custom_url_scheme", buildAppId
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

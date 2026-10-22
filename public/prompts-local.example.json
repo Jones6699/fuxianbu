@@ -1,0 +1,16 @@
+{
+  "moduleFunctionCategories": {
+    "示例分类": {
+      "示例子类": ["示例功能项1", "示例功能项2"]
+    }
+  },
+  "structureTemplates": ["示例结构A", "示例结构B"],
+  "structureTemplateModules": {
+    "示例结构A": [
+      { "name": "示例模块", "required": true }
+    ]
+  },
+  "mainPOV": ["主角", "配角"],
+  "characters": ["主角", "配角"],
+  "defaultCharacters": ["主角"]
+}
