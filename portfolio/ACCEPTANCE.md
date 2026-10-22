@@ -1,7 +1,7 @@
-# InkFlow 前端原型 — 验收报告
+# Threadbook 前端原型 — 验收报告
 
-> 依据：`prototype-spec-inkflow.md`（产品级规范）+ `build-prototype` skill（十步流程）＋ `原型生成规范.md` §14/§16。
-> 产出文件：`prototype/inkflow-prototype.html`（单文件、可离线双击打开）。
+> 依据：`prototype-spec-threadbook.md`（产品级规范）+ `build-prototype` skill（十步流程）＋ `原型生成规范.md` §14/§16。
+> 产出文件：`portfolio/threadbook-prototype.html`（单文件、可离线双击打开）。
 > 交付模型：**无源码模型（§6.3）** — 静态 HTML/CSS/JS，Mock 数据驱动，`data-page="home"` 单页 + overlay，**演示级交互，刷新即复原，不持久化**。
 
 ---
@@ -59,6 +59,6 @@
 
 ## 五、如何打开
 
-直接用浏览器打开 `D:\novel apk\novel-app\prototype\inkflow-prototype.html`（无需服务器、无需构建）。推荐 Chrome DevTools 设备模拟（430px 竖屏）查看移动效果。
+直接用浏览器打开仓库中的 `portfolio/threadbook-prototype.html`（无需服务器、无需构建）。推荐 Chrome DevTools 设备模拟（430px 竖屏）查看移动效果。
 
 > 本报告为演示交付。正式 Android APK（Capacitor + IndexedDB + SSE 直连模型 API）不在无源码原型范围，属工程开发阶段。

@@ -64,7 +64,7 @@ export function TopBar({
         )}
       </div>
       <button className="topbar-btn" onClick={onCopySession} title="复制输出">&#8659;</button>
-      <button className="topbar-btn workbench-topbar" onClick={onToggleWorkbench} title="墨脉桥">桥</button>
+      <button className="topbar-btn workbench-topbar" onClick={onToggleWorkbench} title="协作桥">桥</button>
       <button className="topbar-btn ledger-topbar" onClick={onToggleLedger} title="剧情账本">簿</button>
       <button className="topbar-btn" onClick={onToggleSearch} title="搜索">&#x2315;</button>
       <button className="topbar-btn" onClick={onCloneSession} title="克隆对话">&#8644;</button>

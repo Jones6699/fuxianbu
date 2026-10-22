@@ -1,13 +1,13 @@
 {
-  "name": "fuxianbu",
+  "name": "threadbook",
   "version": "1.0.0",
   "private": true,
-  "description": "伏线簿 - 带剧情账本的移动端 AI 写作助手 Android APK",
+  "description": "Threadbook（伏线簿）- 带剧情账本的移动端 AI 写作助手 Android APK",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "cap:init": "npx cap init inkflow com.inkflow.app --web-dir=dist",
+    "cap:init": "npx cap init Threadbook com.fuxianbu.app --web-dir=dist",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "cap:open": "npx cap open android",

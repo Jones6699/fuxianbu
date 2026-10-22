@@ -1,7 +1,7 @@
-# InkFlow 原型生成规格（prototype-spec）
+# Threadbook 原型生成规格（prototype-spec）
 
 > 依据：`原型生成规范.md` v1.1 + `build-prototype` skill 十步流程。
-> 用途：把 InkFlow（移动端 AI 写作助手）稳定产出为可交互原型/前端，不依赖运气。
+> 用途：把 Threadbook（移动端 AI 写作助手）稳定产出为可交互原型/前端，不依赖运气。
 > 本文件是**产品级规范**（做什么、长什么样、怎么交互），不含具体代码实现；工程级规范（§16）单独一节。
 
 ---
@@ -105,7 +105,7 @@
 ## 3. 信息架构（P0）
 
 ```
-InkFlow
+Threadbook
 ├── data-page="home"          聊天主界面（默认落地页，应用壳）
 │   ├── TopBar                标题 + 全局操作
 │   ├── CheckerBar            文风检查警告（条件显示）

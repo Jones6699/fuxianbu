@@ -392,12 +392,12 @@ body.light ::placeholder { color: #aaa; }
 .workbench-lan input { width:100%; box-sizing:border-box; padding:9px; border:1px solid #506486; border-radius:7px; background:#121b2d; color:#f2f5ff; }
 .workbench-lan-actions { display:flex; gap:7px; }
 .workbench-lan-actions button { flex:1; padding:9px 6px; border:1px solid #6686c8; border-radius:7px; background:#2a4a8a; color:#fff; }
-/* 墨脉移动端顶部控制按钮：减少灰度，强化可点击层级。 */
+/* Threadbook 移动端顶部控制按钮：减少灰度，强化可点击层级。 */
 .topbar-btn { border:1px solid transparent; transition:background .16s,border-color .16s,color .16s; }
 .topbar-btn:hover { color:#dce7ff; background:#1d2b47; border-color:#334b75; }
 .topbar-title-meta { letter-spacing:.02em; }
 
-/* 墨脉移动端：深蓝夜读底 + 金色进度线，突出当前写作状态。 */
+/* Threadbook 移动端：深蓝夜读底 + 金色进度线，突出当前写作状态。 */
 body { background:#101522; }
 .topbar { height:56px; padding:8px 14px; background:#121b2d; border-bottom:1px solid #293958; }
 .topbar-title { color:#f2f5ff; letter-spacing:.04em; }

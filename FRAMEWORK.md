@@ -1,4 +1,4 @@
-# 项目框架速查 — 伏线簿
+# 项目框架速查 — Threadbook（伏线簿）
 
 ## 技术栈
 React 18 / TypeScript / Vite / Zustand / Capacitor 6 → Android APK

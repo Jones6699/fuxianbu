@@ -68,7 +68,7 @@ function buildReport(samples: Sample[]): string {
   const ai = samples.filter((s) => s.group === "AI生成");
 
   const lines: string[] = [];
-  lines.push("# InkFlow 工程基准报告 ①：质量评分分布");
+  lines.push("# Threadbook 工程基准报告 ①：质量评分分布");
   lines.push("");
   lines.push(`- 生成时间：${new Date().toLocaleString("zh-CN")}`);
   lines.push("- 评分引擎：7 层 × 11 项加权 Slop 检测（`fullSlopScan`，0-10 分，越高越好）");

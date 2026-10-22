@@ -6,7 +6,7 @@ set HAS_LOCAL=0
 if exist "public\prompts-local.json" set HAS_LOCAL=1
 
 echo ============================================
-echo   InkFlow APK 打包（干净版 / 公开分发）
+echo   Threadbook APK 打包（干净版 / 公开分发）
 echo   构建期间自动隐藏本地扩展文件，产物不含
 echo ============================================
 echo.
@@ -129,7 +129,7 @@ if not exist "android\gradlew.bat" (
     echo 请先运行: npx cap add android
     goto :fail
 )
-call .\android\gradlew.bat -p android -PbuildAppId=com.inkflow.app.public -PbuildAppName=InkFlow assembleDebug
+call .\android\gradlew.bat -p android -PbuildAppId=com.inkflow.app.public -PbuildAppName=Threadbook assembleDebug
 if %errorlevel% neq 0 (
     echo.
     echo [X] APK 打包失败
@@ -140,7 +140,7 @@ if %errorlevel% neq 0 (
 :: 生成干净版产物
 echo [6/6] 生成干净版 APK...
 if not exist "apk-dist" mkdir "apk-dist"
-copy /y "android\app\build\outputs\apk\debug\app-debug.apk" "apk-dist\InkFlow-public.apk" >nul
+copy /y "android\app\build\outputs\apk\debug\app-debug.apk" "apk-dist\Threadbook-public.apk" >nul
 if %errorlevel% neq 0 (
     echo     [X] 复制 APK 失败
     goto :fail
@@ -152,7 +152,7 @@ if exist "dist\prompts-local.json" (
     echo     [X] dist\prompts-local.json 仍存在，产物不干净！
     goto :fail
 )
-powershell -NoProfile -Command "Add-Type -AssemblyName System.IO.Compression.FileSystem; $z=[IO.Compression.ZipFile]::OpenRead('apk-dist\InkFlow-public.apk'); try { $h=@($z.Entries | Where-Object { ($_.FullName -replace '\\','/') -like '*public/prompts-local.json' }); if($h.Count -gt 0){ 'FOUND: ' + $h[0].FullName; exit 1 } else { '     OK: APK 内未发现 prompts-local.json' } } finally { $z.Dispose() }"
+powershell -NoProfile -Command "Add-Type -AssemblyName System.IO.Compression.FileSystem; $z=[IO.Compression.ZipFile]::OpenRead('apk-dist\Threadbook-public.apk'); try { $h=@($z.Entries | Where-Object { ($_.FullName -replace '\\','/') -like '*public/prompts-local.json' }); if($h.Count -gt 0){ 'FOUND: ' + $h[0].FullName; exit 1 } else { '     OK: APK 内未发现 prompts-local.json' } } finally { $z.Dispose() }"
 if %errorlevel% neq 0 goto :fail
 
 :: 还原本地扩展文件
@@ -161,7 +161,7 @@ call :restore
 echo.
 echo ============================================
 echo   干净版 APK 生成成功！
-echo   apk-dist\InkFlow-public.apk
+echo   apk-dist\Threadbook-public.apk
 echo   （不含本地扩展内容，可公开分发）
 echo ============================================
 echo.

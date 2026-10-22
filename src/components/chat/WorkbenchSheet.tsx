@@ -85,9 +85,9 @@ export function WorkbenchSheet({ session, onClose }: Props) {
     } catch (error) { setNotice((error as Error).message); }
   }
 
-  return <div className="workbench-overlay" role="dialog" aria-modal="true" aria-label="墨脉桥">
+  return <div className="workbench-overlay" role="dialog" aria-modal="true" aria-label="协作桥">
     <div className="workbench-sheet">
-      <div className="workbench-head"><strong>墨脉桥</strong><button onClick={onClose} aria-label="关闭">×</button></div>
+      <div className="workbench-head"><strong>协作桥</strong><button onClick={onClose} aria-label="关闭">×</button></div>
       <p>从桌面工作台导入章节设定，在当前项目写作；再导出一份可编辑的候选稿。导出不会直接修改桌面正文或信息账本。</p>
       <label className="workbench-import">导入章节资料 JSON<input type="file" accept=".json,application/json" onChange={event => { void importContext(event.target.files?.[0]); event.target.value = ""; }} /></label>
       <div className="workbench-lan"><strong>局域网直连</strong><p>电脑端点击“生成局域网配对码”，手机与电脑连接同一 Wi-Fi 后填写：</p><input value={lanUrl} onChange={event => setLanUrl(event.target.value)} placeholder="电脑地址，例如 http://192.168.1.8:4173" /><input value={lanToken} onChange={event => setLanToken(event.target.value.toUpperCase())} placeholder="12 位配对码" autoCapitalize="characters" /><div className="workbench-lan-actions"><button onClick={() => void connectLan()}>连接并导入设定</button><button onClick={() => void sendLan()}>直接回传候选稿</button></div></div>

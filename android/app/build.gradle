@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 // 可独立安装的两个版本：
-//   默认（apk-full.bat 完整版）：com.inkflow.app / InkFlow
-//   干净版（apk.bat 公开分发）：com.inkflow.app.public / InkFlow
+//   默认（apk-full.bat 完整版）：沿用既有包标识 / Threadbook
+//   干净版（apk.bat 公开分发）：沿用既有公开版包标识 / Threadbook
 // 包名不同 => 可同时安装在手机上互不覆盖
 def buildAppId = project.hasProperty('buildAppId') ? project.getProperty('buildAppId') : 'com.inkflow.app'
-def buildAppName = project.hasProperty('buildAppName') ? project.getProperty('buildAppName') : 'InkFlow'
+def buildAppName = project.hasProperty('buildAppName') ? project.getProperty('buildAppName') : 'Threadbook'
 
 android {
     namespace "com.inkflow.app"

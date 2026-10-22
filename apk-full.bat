@@ -3,7 +3,7 @@ chcp 65001 >nul
 cd /d "%~dp0"
 
 echo ============================================
-echo    InkFlow APK 打包
+echo    Threadbook APK 打包
 echo ============================================
 echo.
 

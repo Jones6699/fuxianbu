@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>InkFlow · 原型</title>
+<title>Threadbook · 原型</title>
 <style>
 /* ============ §1.3 Design Tokens ============ */
 /* Dark 为默认；body.light 切换亮色 */
@@ -17,7 +17,7 @@
   --rad-0:0px; --rad-6:6px; --rad-8:8px; --rad-14:14px; --rad-18:18px;
   --sh-0:none; --sh-1:0 2px 8px rgba(0,0,0,.4); --sh-2:0 4px 24px rgba(0,0,0,.5);
   --dur:200ms; --ease:cubic-bezier(.22,.61,.36,1);
-  /* 语义层 token（Dark）— 对齐真实 InkFlow：靛蓝 #7c8aff */
+  /* 语义层 token（Dark）— 对齐真实 Threadbook：靛蓝 #7c8aff */
   --color-primary:#7c8aff; --color-primary-hover:#6a7ae6; --color-primary-active:#5a6ae0; --color-primary-disabled:#3a3a5a;
   --color-on-primary:#ffffff;
   --color-bg-base:#0a0a0a; --color-bg-surface:#1a1a1a; --color-bg-elevated:#1a1a1a; --color-bg-subtle:#222222;
@@ -301,8 +301,8 @@ a,button,input,textarea,select:focus-visible{outline:2px solid var(--color-focus
       <header class="topbar" role="banner">
         <button class="sbtn" id="btnHistory" aria-label="打开历史侧栏" title="历史">☰</button>
         <div class="title" id="topbarTitle" title="点击重命名">
-          <span class="t-main" id="convTitle">第3章 夜店冲突</span>
-          <span class="t-sub" id="projTitle">都市小说《霓虹》</span>
+          <span class="t-main" id="convTitle">第十五章 问心台</span>
+          <span class="t-sub" id="projTitle">仙侠小说《桃之夭夭》</span>
         </div>
         <button class="sbtn" id="btnSearch" aria-label="全局搜索" title="搜索">🔍</button>
         <button class="sbtn" id="btnNew" aria-label="新建对话" title="新建对话" style="color:var(--color-primary)">+</button>
@@ -452,13 +452,13 @@ a,button,input,textarea,select:focus-visible{outline:2px solid var(--color-focus
 const MOCK = {
   projects:[
     {id:'p1', name:'默认项目'},
-    {id:'p2', name:'都市小说《霓虹》'},
+    {id:'p2', name:'仙侠小说《桃之夭夭》'},
     {id:'p3', name:'仙侠新作《问剑》'},
     {id:'p4', name:'短篇集'},
     {id:'p5', name:'练习草稿'},
   ],
   conversations:[
-    {id:'c1', projectId:'p2', title:'第3章 夜店冲突'},
+    {id:'c1', projectId:'p2', title:'第十五章 问心台'},
     {id:'c2', projectId:'p1', title:'主角人设打磨'},
     {id:'c3', projectId:'p2', title:'描写环境氛围'},
     {id:'c4', projectId:'p3', title:'卡文求助'},
@@ -466,17 +466,17 @@ const MOCK = {
     {id:'c6', projectId:'p3', title:'招式命名头脑风暴'},
   ],
   knowledge:[
-    {id:'k1', type:'character', title:'主角·陈歌', content:'26岁，前刑警，退役后经营一家酒吧。冷硬、寡言，有旧伤（左臂枪伤）。', scope:'global'},
-    {id:'k2', type:'character', title:'女主·苏曼', content:'夜店高管，能干圆滑，与陈歌有旧怨。', scope:'limited'},
-    {id:'k3', type:'setting', title:'世界观·雨城', content:'常年阴雨，霓虹灯是城市的主色调，罪案都藏在夜色里。', scope:'global'},
-    {id:'k4', type:'reference', title:'《冷硬派写作》', content:'多用短句、少形容词，动作先于心理。', scope:'global'},
-    {id:'k5', type:'message', title:'给AI的写作指令', content:'文风冷硬，避免情绪化渲染，多用具体意象。', scope:'global'},
-    {id:'k6', type:'draft', title:'第3章开头草稿', content:'雨把霓虹灯的倒影砸碎在积水里，我推开那扇陈年的木门。', scope:'global'},
+    {id:'k1', type:'character', title:'主角·何稻絮', content:'养气书院年幼圣子，约六七岁的孩童身形，气血修行远超同龄；体魄惊人，能忍常人难忍之痛，擅气血幻身与气血灵蝶。', scope:'global'},
+    {id:'k2', type:'character', title:'许师姐·许折葵', content:'香道与剑术双修的美貌女修；问心台中与何稻絮搭档，负责解析香气屏障、搜寻唯一真香。', scope:'limited'},
+    {id:'k3', type:'setting', title:'世界观·千香问心台', content:'千香迷心径的终极角逐之地。四十九道香气屏障垂落，遮蔽莲花道台，阴阳泉眼为异象；参悟香气法则、夺取香引者，方有机缘触及唯一真香。', scope:'global'},
+    {id:'k4', type:'reference', title:'《桃之夭夭》文风', content:'古典仙侠笔法：四字骈句、意象铺陈、景语带灵气；动作与心境交织，冲突处收紧节奏，留白收束。', scope:'global'},
+    {id:'k5', type:'message', title:'给AI的写作指令', content:'保持原文文风，避免现代词汇；对话简省，香息、剑意等意象要具体。', scope:'global'},
+    {id:'k6', type:'draft', title:'第十五章开头草稿', content:'掀开藤条帘幕，放眼所见乃是一个新的世界。群山环抱如龙蟠，四野苍翠接天青。盆地正心隆起一方青石高台，四角坐镇被风雨侵蚀的威严石兽。', scope:'global'},
     {id:'k7', type:'vocab', title:'高频词避用', content:'缓缓、忽然、仿佛、露出一丝。', scope:'global'},
   ],
   prompts:[
     {id:'pr1', title:'续写一段', content:'继续写下一段，保持当前的视角与节奏。'},
-    {id:'pr2', title:'冷硬风格', content:'用冷硬派风格改写：短句、白描、避免抒情。'},
+    {id:'pr2', title:'保留文风', content:'按《桃之夭夭》的笔法续写：四字骈句、意象铺陈、留白收束。'},
     {id:'pr3', title:'检查文风', content:'检查这段是否过于刻意煽情，若有"AI味"请指出。'},
     {id:'pr4', title:'扩写细节', content:'把这句扩写，补足环境与感官细节，但保持克制。'},
     {id:'pr5', title:'人物动作', content:'用动作代替心理描写来表达此刻情绪。'},
@@ -498,25 +498,39 @@ let msgs = {}; // convId -> [message]
 /* §11 Mock 消息 */
 function buildMockMessages(){
   msgs['c1'] = [
-    {id:A(), role:'user', content:'帮我续写第3章，主角在雨夜推开酒吧门。注意保持冷硬文风。'},
-    {id:A(), role:'bot', content:'雨把霓虹灯敲进积水里，一下一下。门轴的呻吟拖得很长，像债主半夜来讨旧账。\n\n我站在门口，让身后的雨声先停一停。吧台后面，老周头也没抬：\n"还知道来。"\n"来喝一杯。"我把湿透的外套搭在椅背："顺便看看，欠我的那个人，今晚会不会来。"\n\n角落里有人抬了抬酒杯。那姿势太熟了，熟到我右臂的旧伤又开始隐隐发疼……', versions:[]},
-    {id:A(), role:'user', content:'换一种风格，要更冷硬一点，动作直给。'},
-    {id:A(), role:'bot', content:'门开了，雨声跟进来。霓虹灯在积水上碎成一片红。\n\n吧台后，老周抬眼。\n"来啦。"\n"嗯。"我甩了甩外套上的雨："人，来了没有。"\n\n角落有人站起来。我没看脸，先看手——没藏东西。\n\n旧伤在左臂上跳了一下。\n该来的，都来了。', versions:['门开了……第1版','第2版冷硬版']},
+    {id:A(), role:'user', content:'何稻絮怂恿许折葵佯攻裴议梅，自己则趁乱布下气血幻身，趁众人戒备之际锁定“唯一真香”，引爆问心台最终争夺。'},
+    {id:A(), role:'bot', content:'许折葵剑光一引，直取裴议梅肩侧，声势凛然，却留三分回旋。裴议梅眸光微凝，拂袖一格，两道人影在莲花道台上交错而过，香风卷起衣袂，满台肃然。
+
+就在众人目光尽数锁住那道剑影时，何稻絮指尖微动，一缕气血自袖底无声漫出，凝成与他一般无二的身影，立于原地，气息如常。
+
+真身早已借乱局潜入香雾深处。台上四十九道香气屏障簌簌摇动，“唯一真香”的香息，悄然浓了一分。', versions:[]},
+    {id:A(), role:'user', content:'收一收，别写满，留悬念。'},
+    {id:A(), role:'bot', content:'许折葵出剑，裴议梅接招。台上香风一卷，两人错身而过。
+
+众人目光都在剑上。
+
+何稻絮的身影还立在原地，气息平稳——可香雾深处，另一道气血幻身早已散去，真身踩着那一缕最淡的香息，向“唯一真香”伸手。
+
+那缕香，究竟会落在谁手里。', versions:['剑起·第1版','第2版·暗香']},
     {id:A(), role:'bot', content:'API Key 无效，生成中断。请在设置中更新后重试。', error:'API Key 无效，请在设置中更新。'},
   ];
   msgs['c2'] = [
-    {id:A(), role:'user', content:'帮我打磨主角人设，要冷硬但不面瘫。'},
-    {id:A(), role:'bot', content:'陈歌：26岁，前刑警。不是冷，是"懒得解释"。左臂枪伤是旧案留下的，他不提，别人也不敢问。关键不是他不痛，而是他选择不表现出来——这才是冷硬，不是没情绪。\n\n建议加一个反差细节：他记仇，但记的是别人对他的好。', versions:[]},
+    {id:A(), role:'user', content:'帮我打磨何稻絮的人设，他是圣子但年纪还小，要立得住又不失孩子气。'},
+    {id:A(), role:'bot', content:'何稻絮：养气书院年幼圣子，六七岁孩童身形，气血修行却远超同龄。他不是“懂事”，而是把疼痛与算计都咽进肚里，只在许折葵面前露出一点孩子气。
+
+建议加一个反差：他算计得越深，越习惯蹲下来，跟许师姐平视说话。', versions:[]},
   ];
   msgs['c3'] = [
     {id:A(), role:'user', content:'描写雨夜酒吧门口的环境，帮我注入设定。'},
-    {id:A(), role:'bot', content:'夜市的霓虹灯把整条街染成酒红。雨水顺着灯牌往下淌，像谁割了动脉。门口的积水映着"午夜"两个歪斜的字。\n\n一辆出租车亮着箭头，停在路对面，没有人下来。\n\n风把雨雾吹进屋檐，酒气和湿气搅在一起，分不清哪种更刺鼻。', versions:[]},
+    {id:A(), role:'bot', content:'掀开藤条帘幕，群山环抱如龙蟠，四野苍翠接天青。盆地正心，一方青石高台百丈见方，四角坐镇被风雨侵蚀的威严石兽。莲花道台悬浮半空，阴阳泉眼氤氲白气，七七四十九道香气帘幕垂落而下，遮蔽了台上那件不可言说的奇物。
+
+直视一眼，如做一场浮生大梦，心绪繁乱，不能自已。', versions:[]},
   ];
   /* 卡文求助 = 空消息对话（空态） */
   msgs['c5'] = [];
   /* 章节开头重写 = 含极限态超长消息 */
   let long = '';
-  for(let i=0;i<50;i++){ long += '霓虹灯在雨里明明灭灭，酒气混着潮湿的烦恼爬上窗户。这种夜晚，谁都不该独自醒着。街道尽头传来踩水的脚步，一步，一步，靠近那扇把秘密关在门里的酒吧。'; }
+  for(let i=0;i<50;i++){ long += '香引流转，四十九道香气帘幕明灭不定。问心台上剑意与香风绞作一处，气血灵蝶振翅，阴阳泉眼氤氲吞吐。谁先锁住那缕唯一真香，谁便握住此局胜负，一步之差，便是天壤。'; }
   msgs['c6'] = [
     {id:A(), role:'user', content:'把这段开头重写得更抓人。'},
     {id:A(), role:'bot', content:long, versions:[]},
@@ -743,12 +757,17 @@ function send(){
   /* 正常 SSE 流式模拟 */
   cur.generating=true;
   const b = {id:A(), role:'bot', content:'', streaming:true, versions:[]};
-  if(settings.thinkOn){ b.think=[{text:'1. 确认要续写冷硬风\n2. 注入知识：雨城设定、主角人设\n3. 组织场景动作推进\n4. 控制避免高频词'}]; }
+  if(settings.thinkOn){ b.think=[{text:'1. 确认要续写原文文风
+2. 注入知识：问心台设定、何稻絮人设
+3. 组织剑招与香息推进
+4. 控制避免高频词'}]; }
   list.push(b);
   renderMessages();
   updateSendBtn();
   const base=(settings.previewBubble? '预览版 ':'');
-  const reply = base+'雨声倒灌进门，霓虹把它染成红色。吧台后老周头都没抬："来啦。"\n"嗯。"我在积水的倒影里确认自己没带多余的软弱来。\n角落那杯酒的姿势，我认得。\n旧伤，又开始隐隐发紧。';
+  const reply = base+'剑光与香风绞作一处。许折葵错身收剑，裴议梅立在原地，指尖的香引明灭不定。台上安静了一瞬。
+
+何稻絮的气息，不知何时已不在原处。';
   streamIn(b, reply);
 }
 

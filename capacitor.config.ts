@@ -2,7 +2,7 @@ import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.fuxianbu.app",
-  appName: "伏线簿",
+  appName: "Threadbook",
   webDir: "dist",
   server: {
     androidScheme: "https",
