@@ -4,6 +4,7 @@ import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { useProjectStore } from "../../store/projectStore";
 import type { ChatSession } from "../../types/chat";
 import { candidateFromMessage, parseWorkbenchContext } from "../../types/handoff";
+import { BrowserQRCodeReader } from "@zxing/browser";
 
 interface Props { session?: ChatSession; onClose: () => void }
 
@@ -18,6 +19,7 @@ export function WorkbenchSheet({ session, onClose }: Props) {
   const [notice, setNotice] = useState("");
   const [lanUrl, setLanUrl] = useState("");
   const [lanToken, setLanToken] = useState("");
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   useEffect(() => {
     const message = replies.find(item => item.id === messageId) || replies[replies.length - 1];
@@ -72,6 +74,30 @@ export function WorkbenchSheet({ session, onClose }: Props) {
     } catch (error) { setNotice((error as Error).message); }
   }
 
+  async function scanLanQr() {
+    setScannerOpen(true);
+    try {
+      const reader = new BrowserQRCodeReader();
+      const result = await reader.decodeOnceFromConstraints({ video: { facingMode: { ideal: "environment" } } }, "threadbook-qr-video");
+      const payload = JSON.parse(result.getText()) as { version?: number; url?: string; token?: string; expiresAt?: number };
+      if (payload.version !== 1 || !payload.url || !payload.token) throw new Error("二维码不是有效的 Threadbook 配对码");
+      if (payload.expiresAt && payload.expiresAt < Date.now()) throw new Error("二维码已过期，请在电脑端重新生成");
+      setLanUrl(payload.url);
+      setLanToken(payload.token.toUpperCase());
+      setScannerOpen(false);
+      setNotice("扫码成功，正在连接电脑…");
+      const response = await fetch(`${payload.url.replace(/\/$/, "")}/api/lan/context?token=${encodeURIComponent(payload.token)}`);
+      const data = await response.json(); if (!response.ok) throw new Error(data.error || "无法连接电脑");
+      if (!project) throw new Error("当前项目不存在");
+      const parsed = parseWorkbenchContext(data);
+      projectStore.bindWorkbenchContext(project.id, parsed);
+      setNotice(`已扫码连接 ${parsed.project} / ${parsed.chapter}`);
+    } catch (error) {
+      setScannerOpen(false);
+      setNotice((error as Error).message || "扫码失败，请重试或手动输入");
+    }
+  }
+
   async function sendLan() {
     if (!context || !session) { setNotice("请先连接章节资料"); return; }
     try {
@@ -90,7 +116,8 @@ export function WorkbenchSheet({ session, onClose }: Props) {
       <div className="workbench-head"><strong>协作桥</strong><button onClick={onClose} aria-label="关闭">×</button></div>
       <p>从桌面工作台导入章节设定，在当前项目写作；再导出一份可编辑的候选稿。导出不会直接修改桌面正文或信息账本。</p>
       <label className="workbench-import">导入章节资料 JSON<input type="file" accept=".json,application/json" onChange={event => { void importContext(event.target.files?.[0]); event.target.value = ""; }} /></label>
-      <div className="workbench-lan"><strong>局域网直连</strong><p>电脑端点击“生成局域网配对码”，手机与电脑连接同一 Wi-Fi 后填写：</p><input value={lanUrl} onChange={event => setLanUrl(event.target.value)} placeholder="电脑地址，例如 http://192.168.1.8:4173" /><input value={lanToken} onChange={event => setLanToken(event.target.value.toUpperCase())} placeholder="12 位配对码" autoCapitalize="characters" /><div className="workbench-lan-actions"><button onClick={() => void connectLan()}>连接并导入设定</button><button onClick={() => void sendLan()}>直接回传候选稿</button></div></div>
+      <div className="workbench-lan"><strong>局域网直连</strong><p>电脑端生成二维码后，手机与电脑连接同一 Wi-Fi，推荐直接扫码：</p><div className="workbench-lan-actions"><button onClick={() => void scanLanQr()}>扫码连接</button><button onClick={() => void connectLan()}>手动连接</button></div><input value={lanUrl} onChange={event => setLanUrl(event.target.value)} placeholder="电脑地址，例如 http://192.168.1.8:4173" /><input value={lanToken} onChange={event => setLanToken(event.target.value.toUpperCase())} placeholder="12 位配对码" autoCapitalize="characters" /><div className="workbench-lan-actions"><button onClick={() => void sendLan()}>直接回传候选稿</button></div></div>
+      {scannerOpen && <div className="workbench-scanner"><video id="threadbook-qr-video" autoPlay muted playsInline /><button onClick={() => setScannerOpen(false)}>取消扫码</button><small>请将电脑端二维码放入取景框</small></div>}
       {context && <div className="workbench-context"><strong>{context.project} / {context.chapter}</strong><small>设定版本 {context.revision.slice(0, 12)} · {context.assets.length} 份资产</small></div>}
       <label>选择当前对话的 AI 回复<select value={messageId} onChange={event => setMessageId(event.target.value)}>
         {replies.length ? replies.map((message, index) => <option key={message.id} value={message.id}>第 {index + 1} 条 · {message.date}</option>) : <option value="">暂无 AI 回复</option>}
