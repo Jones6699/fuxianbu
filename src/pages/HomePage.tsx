@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { useChatStore, useSettingsStore, useProjectStore, useOutlineStore } from "../store";
+import { useChatStore, useSettingsStore, useProjectStore, useOutlineStore, useLedgerStore } from "../store";
 import { useChat } from "../hooks/useChat";
 import { generateId } from "../utils/id";
 import { copyToClipboard } from "../utils/text";
@@ -16,6 +16,7 @@ import { KnowledgeSheet } from "../components/knowledge/KnowledgeSheet";
 import { OutlineConfigSheet } from "../components/knowledge/OutlineConfigSheet";
 import { SearchSheet } from "../components/common/SearchSheet";
 import { LedgerSheet } from "../components/ledger/LedgerSheet";
+import { findLedgerConflicts } from "../services/ledger";
 
 export function HomePage() {
   // ====== View toggles ======
@@ -27,6 +28,7 @@ export function HomePage() {
   const [showOutlineConfig, setShowOutlineConfig] = useState(false);
   const [showWorkbench, setShowWorkbench] = useState(false);
   const [showLedger, setShowLedger] = useState(false);
+  const [ledgerNotice, setLedgerNotice] = useState("");
 
   // ====== Knowledge sheet state ======
   const [sheetHeight, setSheetHeight] = useState(55);
@@ -167,6 +169,11 @@ export function HomePage() {
       const lastMsg = messages[messages.length - 1];
       if (lastMsg?.role === "assistant" && !lastMsg.streaming && typeof lastMsg.content === "string" && lastMsg.content) {
         const report = fullSlopScan(lastMsg.content);
+        const conflicts = findLedgerConflicts(lastMsg.content, useLedgerStore.getState().forProject(currentProjectId));
+        if (conflicts.length > 0) {
+          setLedgerNotice(`剧情账本提醒：发现 ${conflicts.length} 处可能冲突，请核对账本与原文`);
+          setTimeout(() => setLedgerNotice(""), 5000);
+        }
         setSlopReport(report);
         const hl = liveHighlightScan(lastMsg.content);
         setSlopHighlight(hl.positions.length > 0 ? hl : null);
@@ -521,6 +528,7 @@ export function HomePage() {
       {copyToast && (
         <div style={{ position: "fixed", bottom: 80, left: "50%", transform: "translateX(-50%)", background: "#333", color: "#fff", padding: "8px 20px", borderRadius: 20, fontSize: 14, zIndex: 200, animation: "toastIn 0.2s ease-out" }}>{copyToast}</div>
       )}
+      {ledgerNotice && <div className="toast ledger-toast">{ledgerNotice}</div>}
     </div>
   );
 }
