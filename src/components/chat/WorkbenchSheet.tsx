@@ -5,6 +5,7 @@ import { useProjectStore } from "../../store/projectStore";
 import type { ChatSession } from "../../types/chat";
 import { candidateFromMessage, parseWorkbenchContext } from "../../types/handoff";
 import { BrowserQRCodeReader } from "@zxing/browser";
+import { lanRequest } from "../../services/lan";
 
 interface Props { session?: ChatSession; onClose: () => void }
 
@@ -65,8 +66,7 @@ export function WorkbenchSheet({ session, onClose }: Props) {
     try {
       const base = lanUrl.trim().replace(/\/$/, "");
       if (!base || !lanToken.trim()) throw new Error("请输入电脑显示的局域网地址和配对码");
-      const response = await fetch(`${base}/api/lan/context?token=${encodeURIComponent(lanToken.trim())}`);
-      const data = await response.json(); if (!response.ok) throw new Error(data.error || "无法连接电脑");
+      const data = await lanRequest(base, `/api/lan/context?token=${encodeURIComponent(lanToken.trim())}`);
       if (!project) throw new Error("当前项目不存在");
       const parsed = parseWorkbenchContext(data);
       projectStore.bindWorkbenchContext(project.id, parsed);
@@ -86,8 +86,7 @@ export function WorkbenchSheet({ session, onClose }: Props) {
       setLanToken(payload.token.toUpperCase());
       setScannerOpen(false);
       setNotice("扫码成功，正在连接电脑…");
-      const response = await fetch(`${payload.url.replace(/\/$/, "")}/api/lan/context?token=${encodeURIComponent(payload.token)}`);
-      const data = await response.json(); if (!response.ok) throw new Error(data.error || "无法连接电脑");
+      const data = await lanRequest(payload.url, `/api/lan/context?token=${encodeURIComponent(payload.token)}`);
       if (!project) throw new Error("当前项目不存在");
       const parsed = parseWorkbenchContext(data);
       projectStore.bindWorkbenchContext(project.id, parsed);
@@ -105,8 +104,7 @@ export function WorkbenchSheet({ session, onClose }: Props) {
       if (!message) throw new Error("请先选择一条 AI 回复");
       if (!lanUrl.trim() || !lanToken.trim()) throw new Error("请先填写电脑地址和配对码");
       const candidate = candidateFromMessage(context, session, message, draft);
-      const response = await fetch(`${lanUrl.trim().replace(/\/$/, "")}/api/lan/candidate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: lanToken.trim(), package: candidate }) });
-      const data = await response.json(); if (!response.ok) throw new Error(data.error || "候选稿回传失败");
+      const data = await lanRequest(lanUrl, "/api/lan/candidate", { token: lanToken.trim(), package: candidate });
       setNotice(`候选稿已直接回传电脑：${data.id.slice(0, 8)}`);
     } catch (error) { setNotice((error as Error).message); }
   }
@@ -118,7 +116,7 @@ export function WorkbenchSheet({ session, onClose }: Props) {
       <label className="workbench-import">导入章节资料 JSON<input type="file" accept=".json,application/json" onChange={event => { void importContext(event.target.files?.[0]); event.target.value = ""; }} /></label>
       <div className="workbench-lan"><strong>局域网直连</strong><p>电脑端生成二维码后，手机与电脑连接同一 Wi-Fi，推荐直接扫码：</p><div className="workbench-lan-actions"><button onClick={() => void scanLanQr()}>扫码连接</button><button onClick={() => void connectLan()}>手动连接</button></div><input value={lanUrl} onChange={event => setLanUrl(event.target.value)} placeholder="电脑地址，例如 http://192.168.1.8:4173" /><input value={lanToken} onChange={event => setLanToken(event.target.value.toUpperCase())} placeholder="12 位配对码" autoCapitalize="characters" /><div className="workbench-lan-actions"><button onClick={() => void sendLan()}>直接回传候选稿</button></div></div>
       {scannerOpen && <div className="workbench-scanner"><video id="threadbook-qr-video" autoPlay muted playsInline /><button onClick={() => setScannerOpen(false)}>取消扫码</button><small>请将电脑端二维码放入取景框</small></div>}
-      {context && <div className="workbench-context"><strong>{context.project} / {context.chapter}</strong><small>设定版本 {context.revision.slice(0, 12)} · {context.assets.length} 份资产</small></div>}
+      {context && <div className="workbench-context"><strong>已导入电脑资料：{context.project} / {context.chapter}</strong><small>设定版本 {context.revision.slice(0, 12)} · {context.assets.length} 份资料</small>{context.assets.map(asset => <details key={asset.path}><summary>{asset.path}</summary><pre style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere", maxHeight: "30vh", overflow: "auto" }}>{asset.content}</pre></details>)}</div>}
       <label>选择当前对话的 AI 回复<select value={messageId} onChange={event => setMessageId(event.target.value)}>
         {replies.length ? replies.map((message, index) => <option key={message.id} value={message.id}>第 {index + 1} 条 · {message.date}</option>) : <option value="">暂无 AI 回复</option>}
       </select></label>
